@@ -1,0 +1,8 @@
+{
+  "ipv4_mask_length": 8,
+  "ipv6_prefix": "2001:db8::/32",
+  "border_relay_ipv4": "10.0.0.1",
+  "ce_wan_ipv4": "10.100.100.1",
+  "target_ipv6": "2a05:541:104:66::1",
+  "target_port": 22
+}

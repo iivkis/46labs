@@ -17,3 +17,4 @@ jobs:
           python3 labs/siit-dc/translator.py --selftest
           python3 labs/wan-capabilities/probe.py --selftest
           python3 labs/transition-edge/transition.py selftest
+          python3 labs/real-relay/relay.py selftest
