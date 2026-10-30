@@ -126,8 +126,7 @@ def make_token(path: Path) -> dict:
         raise ValueError(f"refusing to overwrite existing token file: {path}") from exc
     try:
         with os.fdopen(fd, "w", encoding="ascii") as stream:
-            stream.write(secrets.token_hex(32) + "
-")
+            stream.write(secrets.token_hex(32) + "\n")
     except BaseException:
         path.unlink(missing_ok=True)
         raise
@@ -148,11 +147,7 @@ def probe_edge(ip: str, port: int, family: int, key: bytes, timeout: float) -> d
         with socket.socket(family, socket.SOCK_STREAM) as sock:
             sock.settimeout(timeout)
             sock.connect(address)
-            request = (f"GET /probe/{nonce} HTTP/1.0
-Host: 46labs
-Connection: close
-
-").encode("ascii")
+            request = (f"GET /probe/{nonce} HTTP/1.0\r\nHost: 46labs\r\nConnection: close\r\n\r\n").encode("ascii")
             sock.sendall(request)
             received = bytearray()
             while len(received) < 4096:
@@ -161,9 +156,7 @@ Connection: close
                     break
                 received.extend(block)
         output["rtt_ms"] = round((time.monotonic() - start) * 1000, 2)
-        headers, marker, body = bytes(received).partition(b"
-
-")
+        headers, marker, body = bytes(received).partition(b"\r\n\r\n")
         if not marker or not headers.startswith(b"HTTP/1.0 200"):
             output["error"] = "No valid HTTP/1.0 200 challenge response"
         elif hmac.compare_digest(body.strip().decode("ascii", errors="replace"), challenge_digest(key, nonce)):
@@ -234,7 +227,7 @@ def main() -> int:
         if args.cmd == "inspect":
             result = inspect()
         elif args.cmd == "decode-6rd":
-            raw = bytes.fromhex(re.sub(r"[s:]", "", args.hex))
+            raw = bytes.fromhex(re.sub(r"[\s:]", "", args.hex))
             result = parse_6rd(raw)
             if args.ce_ipv4:
                 result["delegated_ipv6_prefix"] = delegated_prefix(result, args.ce_ipv4)
