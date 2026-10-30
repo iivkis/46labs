@@ -16,3 +16,4 @@ jobs:
           find labs -type f -name '*.py' -exec python3 -m py_compile {} +
           python3 labs/siit-dc/translator.py --selftest
           python3 labs/wan-capabilities/probe.py --selftest
+          python3 labs/transition-edge/transition.py selftest
