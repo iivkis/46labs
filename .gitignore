@@ -4,3 +4,4 @@ __pycache__/
 result
 .direnv/
 .nix-*
+labs/wan-capabilities/report.json

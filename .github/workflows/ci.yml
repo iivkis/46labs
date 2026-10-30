@@ -10,8 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Syntax and translator self-tests
+      - name: Syntax and offline self-tests
         run: |
           find labs -type f -name '*.sh' -exec bash -n {} +
           find labs -type f -name '*.py' -exec python3 -m py_compile {} +
           python3 labs/siit-dc/translator.py --selftest
+          python3 labs/wan-capabilities/probe.py --selftest
